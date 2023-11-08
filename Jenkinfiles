@@ -46,8 +46,7 @@ pipeline {
                 dependencyCheckPublisher pattern: 'dependency-check-report.xml'
                 }
             }
-    }
-    stage('Info Parameter for ZAP') {
+         stage('Info Parameter for ZAP') {
                  steps {
                      script {
                          echo "<--Parameter Initialization-->"
@@ -60,7 +59,6 @@ pipeline {
                      }
                  }
          }
- 
          stage('Setting up OWASP ZAP docker container') {
              steps {
                  script {
@@ -76,8 +74,6 @@ pipeline {
                  }
              }
          }
- 
- 
          stage('Prepare wrk directory') {
              when {
                          environment name : 'GENERATE_REPORT', value: 'true'
@@ -91,8 +87,6 @@ pipeline {
                      }
                  }
          }
- 
- 
          stage('Scanning target on owasp container') {
              steps {
                  script {
@@ -133,6 +127,7 @@ pipeline {
                  }
              }
          }
+           
          stage('Copy Report to Workspace'){
              steps {
                  script {
@@ -142,7 +137,8 @@ pipeline {
                  }
              }
          }
-     post {
+    }
+    post {
              always {
                  echo "Removing container"
                  sh '''
