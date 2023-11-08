@@ -5,7 +5,7 @@ pipeline {
                  description: 'Type of scan that is going to perform inside the container',
                  name: 'SCAN_TYPE'
  
-         string defaultValue: "https://example.com",
+         string defaultValue: "http://10.0.2.15:5050/WebGoat/start.mvc#lesson/WebWolfIntroduction.lesson",
                  description: 'Target URL to scan',
                  name: 'TARGET'
  
@@ -146,5 +146,5 @@ pipeline {
                      docker rm owasp
                  '''
              }
-         }
+         } 
 }
