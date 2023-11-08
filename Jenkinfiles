@@ -23,29 +23,29 @@ pipeline {
                 checkout scm
             }
         }
-        // stage ('Build') {
-        //   steps {
-        //     sh 'mvn spotless:apply'
-        //     sh 'mvn clean install -DskipTests'
-        //   }
-        // }
-        // stage('Run SonarQube Analysis') {
-        //     steps {
-        //         script {
-        //             sh "mvn sonar:sonar -Dsonar.projectKey=webgoat25 -Dsonar.host.url=http://10.0.2.15:9000 -Dsonar.login=squ_dacddab9cc32fa2d51de07bd4df2e70113071d3b"
-        //         }
-        //     }
-        // }
-        // stage ('OWASP Dependency-Check Vulnerabilities') {
-        //     steps {
-        //         dependencyCheck additionalArguments: '''
-        //             -o "./"
-        //             -s "./"
-        //             -f "ALL"
-        //             --prettyPrint''', odcInstallation: 'dependency-check'
-        //         dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-        //         }
-        //     }
+        stage ('Build') {
+          steps {
+            sh 'mvn spotless:apply'
+            sh 'mvn clean install -DskipTests'
+          }
+        }
+        stage('Run SonarQube Analysis') {
+            steps {
+                script {
+                    sh "mvn sonar:sonar -Dsonar.projectKey=webgoat25 -Dsonar.host.url=http://10.0.2.15:9000 -Dsonar.login=squ_dacddab9cc32fa2d51de07bd4df2e70113071d3b"
+                }
+            }
+        }
+        stage ('OWASP Dependency-Check Vulnerabilities') {
+            steps {
+                dependencyCheck additionalArguments: '''
+                    -o "./"
+                    -s "./"
+                    -f "ALL"
+                    --prettyPrint''', odcInstallation: 'dependency-check'
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+                }
+            }
          stage('Info Parameter for ZAP') {
                  steps {
                      script {
