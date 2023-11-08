@@ -87,46 +87,52 @@ pipeline {
                      }
                  }
          }
-         stage('Scanning target on owasp container') {
-             steps {
-                 script {
-                     scan_type = "${params.SCAN_TYPE}"
-                     echo "----> scan_type: $scan_type"
-                     target = "${params.TARGET}"
-                     if(scan_type == "Baseline"){
-                         sh """
-                             docker exec owasp \
-                             zap-baseline.py \
-                             -t $target \
-                             -x report.xml \
-                             -I
-                         """
-                     }
-                     else if(scan_type == "APIS"){
-                         sh """
-                             docker exec owasp \
-                             zap-api-scan.py \
-                             -t $target \
-                             -x report.xml \
-                             -I
-                         """
-                     }
-                     else if(scan_type == "Full"){
-                         sh """
-                             docker exec owasp \
-                             zap-full-scan.py \
-                             -t $target \
-                             //-x report.xml
-                             -I
-                         """
-                         //-x report-$(date +%d-%b-%Y).xml
-                     }
-                     else{
-                         echo "Something went wrong..."
-                     }
-                 }
-             }
-         }
+        stage('Scanning target on owasp container') {
+            steps {
+                script {
+                    scan_type = "${params.SCAN_TYPE}"
+                    echo "----> scan_type: $scan_type"
+                    target = "${params.TARGET}"
+                    username = "thienan"
+                    password = "thienan"
+
+                    if(scan_type == "Baseline") {
+                        sh """
+                            docker exec owasp \
+                            zap-baseline.py \
+                            -t $target \
+                            -x report.xml \
+                            -I \
+                            -J '-config api.addrs.addr.name=thienan -config api.addrs.addr.regex=true'
+                        """
+                    }
+                    else if(scan_type == "APIS") {
+                        sh """
+                            docker exec owasp \
+                            zap-api-scan.py \
+                            -t $target \
+                            -x report.xml \
+                            -I \
+                            -J '-config api.addrs.addr.name=thienan -config api.addrs.addr.regex=true'
+                        """
+                    }
+                    else if(scan_type == "Full") {
+                        sh """
+                            docker exec owasp \
+                            zap-full-scan.py \
+                            -t $target \
+                            -x report.xml \
+                            -I \
+                            -J '-config api.addrs.addr.name=thienan -config api.addrs.addr.regex=true'
+                        """
+                    }
+                    else {
+                        echo "Something went wrong..."
+                    }
+                }
+            }
+        }
+
            
          stage('Copy Report to Workspace'){
              steps {
