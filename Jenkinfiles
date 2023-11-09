@@ -46,7 +46,7 @@ pipeline {
         //         dependencyCheckPublisher pattern: 'dependency-check-report.xml'
         //         }
         //     }
-        stage('DAST') {
+        stages('DAST') {
                  steps {
                      script {
                          echo "<--Parameter Initialization-->"
