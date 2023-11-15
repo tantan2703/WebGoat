@@ -137,15 +137,6 @@ pipeline {
         //          }
         //      }
         //  }
-            stage('Prepare wrk directory nuclei') {
-                steps {
-                    script {
-                            sh """
-                                docker exec projectdiscovery/nuclei mkdir projectdiscovery/nuclei/wrk
-                            """
-                        }
-                    }
-            }
             stage('Nuclei'){
                 steps {
                     script {
@@ -159,25 +150,17 @@ pipeline {
                     }   
                 }
             }
-            stage('Copy report to WORKSPACE') {
-                steps {
-                    script {
-                        sh """
-                        docker cp projectdiscovery/nuclei/wrk/output.txt ${WORKSPACE}/report.txt 
-                        """
-                    }
-                }
-            }
     }
     post {
-             always {
-                 echo "Removing container"
-                 sh '''
-                     docker stop owasp
-                     docker rm owasp /
-                     docker stop projectdiscovery/nuclei
-                     docker rm projectdiscovery/nuclei
-                 '''
-             }
+            always {
+                archiveArtifacts 'report.txt'
+                echo "Removing container"
+                sh '''
+                    docker stop owasp
+                    docker rm owasp /
+                    docker stop projectdiscovery/nuclei
+                    docker rm projectdiscovery/nuclei
+                '''
+            }
          } 
 }
