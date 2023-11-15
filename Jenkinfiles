@@ -142,7 +142,7 @@ pipeline {
                     script {
                             sh """
                                 docker exec projectdiscovery \
-                                mkdir /nuclei/wrk
+                                mkdir projectdiscovery/nuclei/wrk
                             """
                         }
                     }
@@ -164,7 +164,7 @@ pipeline {
                 steps {
                     script {
                         sh """
-                        docker cp projectdiscovery:/nuclei/wrk/output.txt ${WORKSPACE}/report.txt 
+                        docker cp projectdiscovery/nuclei/wrk/output.txt ${WORKSPACE}/report.txt 
                         """
                     }
                 }
@@ -176,8 +176,8 @@ pipeline {
                  sh '''
                      docker stop owasp
                      docker rm owasp /
-                     docker stop projectdiscovery
-                     docker rm projectdiscovery /
+                     docker stop projectdiscovery/nuclei
+                     docker rm projectdiscovery/nuclei
                  '''
              }
          } 
