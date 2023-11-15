@@ -137,26 +137,36 @@ pipeline {
         //          }
         //      }
         //  }
+            stage('Prepare wrk directory nuclei') {
+                steps {
+                    script {
+                            sh """
+                                docker exec projectdiscovery \
+                                mkdir /nuclei/wrk
+                            """
+                        }
+                    }
+            }
             stage('Nuclei'){
                 steps {
-                   step{
-                        script {
-                            echo "Pulling up last Nuclei container --> Start"
-                            sh 'docker pull projectdiscovery/nuclei:latest'
-                            echo "Pulling up last VMS container --> End"
-                            echo "Starting container --> Start"
-                            sh """
-                            docker run projectdiscovery/nuclei -u ${params.TARGET} -o report.txt
-                            """
-                        }
-                   }
-                   step {
-                        script {
-                            sh """
-                            docker cp projectdiscovery:/nuclei/wrk/output.txt ${WORKSPACE}/report.txt 
-                            """
-                        }
-                   }
+                    script {
+                        echo "Pulling up last Nuclei container --> Start"
+                        sh 'docker pull projectdiscovery/nuclei:latest'
+                        echo "Pulling up last VMS container --> End"
+                        echo "Starting container --> Start"
+                        sh """
+                        docker run projectdiscovery/nuclei -u ${params.TARGET} -o report.txt
+                        """
+                    }   
+                }
+            }
+            stage('Copy report to WORKSPACE') {
+                steps {
+                    script {
+                        sh """
+                        docker cp projectdiscovery:/nuclei/wrk/output.txt ${WORKSPACE}/report.txt 
+                        """
+                    }
                 }
             }
     }
