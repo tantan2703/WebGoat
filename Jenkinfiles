@@ -146,6 +146,7 @@ pipeline {
                          echo "Starting container --> Start"
                          sh """
                          docker run projectdiscovery/nuclei -u ${params.TARGET} -o output.txt
+                         
                          """
                     }
                 }
@@ -156,7 +157,7 @@ pipeline {
                  echo "Removing container"
                  sh '''
                      docker stop owasp
-                     docker rm owasp
+                     docker rm owasp /
                  '''
              }
          } 
