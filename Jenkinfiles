@@ -145,8 +145,8 @@ pipeline {
                          echo "Pulling up last VMS container --> End"
                          echo "Starting container --> Start"
                          sh """
-                         docker run projectdiscovery/nuclei -u ${params.TARGET} -o output.txt
-                         
+                         docker run projectdiscovery/nuclei -u ${params.TARGET} -o report.txt
+                         docker cp projectdiscovery:/nuclei/wrk/output.txt ${WORKSPACE}/report.txt
                          """
                     }
                 }
@@ -158,6 +158,8 @@ pipeline {
                  sh '''
                      docker stop owasp
                      docker rm owasp /
+                     docker stop projectdiscovery
+                     docker rm projectdiscovery /
                  '''
              }
          } 
