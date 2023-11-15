@@ -141,8 +141,7 @@ pipeline {
                 steps {
                     script {
                             sh """
-                                docker exec projectdiscovery/nuclei 
-                                mkdir projectdiscovery/nuclei/wrk
+                                docker exec projectdiscovery/nuclei mkdir projectdiscovery/nuclei/wrk
                             """
                         }
                     }
