@@ -145,7 +145,7 @@ pipeline {
                         echo "Pulling up last VMS container --> End"
                         echo "Starting container --> Start"
                         sh """
-                        docker run projectdiscovery/nuclei -u ${params.TARGET} > Nuclei_report.xml
+                        docker run projectdiscovery/nuclei -u ${params.TARGET} > Nuclei_report
                         """
                     }   
                 }
@@ -153,11 +153,13 @@ pipeline {
     }
     post {
             always {
-                archiveArtifacts 'Nuclei_report.xml'
+                archiveArtifacts 'Nuclei_report'
                 echo "Removing container"
+                // sh '''
+                //     docker stop owasp
+                //     docker rm owasp /
+                // '''
                 sh '''
-                    // docker stop owasp
-                    // docker rm owasp /
                     docker stop projectdiscovery/nuclei
                     docker rm projectdiscovery/nuclei
                 '''
