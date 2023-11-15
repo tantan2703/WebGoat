@@ -138,7 +138,7 @@ pipeline {
         //      }
         //  }
             stage('Nuclei'){
-                step {
+                steps {
                     script {
                          echo "Pulling up last Nuclei container --> Start"
                          sh 'docker pull projectdiscovery/nuclei:latest'
